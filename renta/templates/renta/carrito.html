@@ -1,0 +1,19 @@
+<h1>Mi Carrito</h1>
+
+<form method="post" action="{% url 'colocar_pedido' %}">
+  {% csrf_token %}
+  {% for item in carrito.items.all %}
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+      <h2>{{ item.carro.nombre }}</h2>
+      <p>Cantidad: {{ item.cantidad }}</p>
+      
+      <label>Fecha inicio:</label>
+      <input type="date" name="fecha_inicio_{{ item.id }}" required>
+      
+      <label>Fecha fin:</label>
+      <input type="date" name="fecha_fin_{{ item.id }}" required>
+    </div>
+  {% endfor %}
+  
+  <button type="submit">Proceder al alquiler</button>
+</form>

@@ -1,0 +1,48 @@
+{% extends "renta/base.html" %}
+{% load static %}
+
+{% block title %}PLATINUM WHELLS{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <h1 class="text-center mb-4">Autos de Lujo</h1>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for carro in carros %}
+      <div class="col">
+        <div class="card h-100 bg-dark text-white border-secondary shadow-lg catalog-card">
+          {% if carro.imagen %}
+            <img src="{{ carro.imagen.url }}" class="card-img-top" alt="{{ carro.nombre }}"
+                 style="height: 200px; object-fit: cover;">
+          {% else %}
+            <img src="{% static 'img/default_car.jpg' %}" class="card-img-top" alt="Imagen no disponible"
+                 style="height: 200px; object-fit: cover;">
+          {% endif %}
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ carro.nombre }}</h5>
+            <p class="card-text flex-grow-1">{{ carro.descripcion|truncatewords:20 }}</p>
+            <p class="card-text"><strong>💰 ${{ carro.precio_por_dia }} / día</strong></p>
+            <form method="post" action="{% url 'agregar_carrito' carro.id %}" class="mt-auto">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-light w-100">
+                🚗 Agregar al carrito
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  .catalog-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .catalog-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 15px rgba(255,255,255,0.2);
+  }
+</style>
+{% endblock %}
